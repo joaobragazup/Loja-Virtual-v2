@@ -1,0 +1,74 @@
+###
+## Server
+###
+server:
+  error:
+    include-message: always
+    include-exception: false
+    include-stacktrace: on_param
+    include-binding-errors: always
+  port: 8080
+
+##
+# Spring and DataSource
+##
+spring:
+  output:
+    ansi:
+      enabled: ALWAYS
+  datasource:
+    url: "jdbc:postgresql://db:5432/loja-virtual"
+    password: admin
+    username: admin
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    ddl-auto: create
+    generate-ddl: true
+    show-sql: true
+    open-in-view: false
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:18080/realms/minha-loja-virtual
+          jwk-set-uri: http://localhost:18080/realms/minha-loja-virtual/protocol/openid-connect/certs
+      client:
+        registration:
+          minha-loja-virtual:
+            authorization-grant-type: client_credentials
+            client-id: loja-virtual-client
+            client-secret: hrAbPJdrXOj4kGoQ7lLjg7nXKZi6I4wZ
+            scope: products:read, products:write, categories:write, purchase:write
+        provider:
+          minha-loja-virtual:
+            token-uri: http://localhost:18080/realms/minha-loja-virtual/protocol/openid-connect/token
+management:
+  health:
+    db:
+      enabled: true
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  info:
+    build:
+      enabled: true
+    env:
+      enabled: true
+    git:
+      enabled: true
+    java:
+      enabled: true
+
+info:
+  application:
+    name: Loja-Virtual
+    description: Aplicação feita para Avaliação do uso de monitoramento

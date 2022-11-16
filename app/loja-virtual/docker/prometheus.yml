@@ -1,0 +1,20 @@
+global:
+  scrape_interval: 15s
+  scrape_timeout: 15s
+  evaluation_interval: 30s
+
+rule_files:
+  - "first_rule.yml"
+  - "second_rule.yml"
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            - alertmanager:9093
+
+scrape_configs:
+  - job_name: 'loja-virtual'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['loja-virtual:8080']
